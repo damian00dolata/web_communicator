@@ -1,19 +1,23 @@
-FROM node:current-bullseye AS build
+FROM node:20-bullseye AS deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
 
-COPY package.json .
-COPY package-lock.json .
-COPY tsconfig.json .
-COPY svelte.config.js .
-COPY vite.config.ts .
-
+FROM node:20-bullseye AS dev
+WORKDIR /app
+COPY --from=deps /app/node_modules /app/node_modules
 COPY . .
+CMD ["npm","run","dev","--","--host","0.0.0.0","--port","3000"]
 
-RUN npm install -g npm@9.8.1
-RUN npm i --force
+FROM deps AS build
+COPY . .
 RUN npm run build
 
-ENTRYPOINT ["node", "build"]
+FROM node:20-bullseye AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY --from=build /app/build ./build
 EXPOSE 3000
-
-# FROM nginx:1.19-alpine
-# COPY --from=build /public /usr/share/nginx/html
+CMD ["node","build"]

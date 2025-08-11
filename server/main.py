@@ -16,6 +16,6 @@ class MainApp:
     self.restApi = RestAPI(self.db, self.sio)
     
 if __name__ == '__main__':
-  uvicorn.run('main:mainApp.restApi.app', reload=True)
+  uvicorn.run('main:mainApp.restApi.app')
     
 mainApp = MainApp()

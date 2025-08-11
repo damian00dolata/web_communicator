@@ -1,11 +1,16 @@
 import sqlite3
 from sqlite3 import Error
+from pathlib import Path
 
 class Database:
   def __init__(self) -> None:
-    database = r"..\database\communiator.db"
+    BASE = Path(__file__).resolve().parent
+    DB_PATH = (BASE.parent / "database" / "communicator.db")
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+    print(f'[DB-INFO] Database path: {DB_PATH}')
+    
     create_table_1, create_table_2, create_table_3 = self.prepare_tables()
-    self.conn = self.create_connection(database)
+    self.conn = self.create_connection(DB_PATH)
     if self.conn is not None:
       self.create_table(self.conn, create_table_1)
       self.create_table(self.conn, create_table_2)
@@ -20,7 +25,7 @@ class Database:
       conn = sqlite3.connect(db_file)
       return conn
     except Error as e:
-      print(e)
+      print(f'[DB-ERROR] Error while connecting to database: {e}')
     return conn
 
   def create_table(self, conn, create_table_sql):
@@ -28,7 +33,7 @@ class Database:
       c = conn.cursor()
       c.execute(create_table_sql)
     except Error as e:
-      print(e)
+      print(f'[DB-ERROR] Error while creating DB table: {e}')
 
   def prepare_tables(self):
     sql_create_rooms_table = """ CREATE TABLE IF NOT EXISTS rooms (

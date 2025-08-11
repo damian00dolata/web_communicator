@@ -1,16 +1,23 @@
-# FROM python:3.9
 FROM python:3.9.17-bookworm
+
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      sqlite3 libsqlite3-dev \
+      build-essential python3-dev libffi-dev libssl-dev \
+      cargo \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN python -m pip install --upgrade pip setuptools wheel
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir 'uvicorn[standard]' bcrypt
 
 COPY . .
 
-# RUN apt-get install build-essential libffi-dev python-dev
-RUN apt-get update
-RUN apt-get install sqlite3
-RUN pip install --upgrade pip
-RUN pip install 'uvicorn[standard]'
-RUN apt-get -y install build-essential cargo
-RUN pip install bcrypt
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
-
-CMD ["uvicorn", "main:mainApp.restApi.app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
+CMD ["uvicorn", "main:mainApp.restApi.app", "--host","0.0.0.0","--port","8000"]

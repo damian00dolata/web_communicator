@@ -1,0 +1,76 @@
+# --- OS / IDE ---
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+.idea/
+*.iml
+.vscode/
+
+# --- Logs / tymczasowe ---
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+*.pid.lock
+*.tsbuildinfo
+.cache/
+.tmp/
+coverage/
+coverage-*
+*.swp
+*.swo
+
+# --- Sekrety / konfiguracje lokalne ---
+.env
+.env.*
+!.env.example
+*.creds
+*.pem
+*.key
+*.crt
+
+# --- SQLite
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
+
+# --- Python (server/) ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.build/
+dist/
+build/
+.eggs/
+*.egg-info/
+pip-wheel-metadata/
+.venv/
+venv/
+env/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.pyre/
+.pytype/
+.ipynb_checkpoints
+
+# --- Node / Svelte / Vite (client/) ---
+node_modules/
+.svelte-kit/
+.vite/
+dist/
+build/
+.eslintcache
+
+# --- Docker ---
+**/.docker-compose.override.local.yml
