@@ -1,14 +1,8 @@
-#################################
-#   uvicorn main:app --reload   #
-#               or              # 
-#        python ./main.py       #
-#################################
-
 import uvicorn
-from server.restapi import RestAPI
-from server.sockio import SockIO
-from server.dbase import Database
-from server.utils.error_handler import add_exception_handlers
+from restapi import RestAPI
+from sockio import SockIO
+from dbase import Database
+from utils.error_handler import add_exception_handlers
 
 class MainApp:
   def __init__(self) -> None:
@@ -18,6 +12,6 @@ class MainApp:
     add_exception_handlers(self.restApi.app, debug=True)
     
 if __name__ == '__main__':
-  uvicorn.run('server.main:mainApp.restApi.app')
+  uvicorn.run('main:mainApp.restApi.app')
     
 mainApp = MainApp()

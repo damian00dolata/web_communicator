@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 from pathlib import Path
-from server.utils.logger import log_info, log_error
+from utils.debug_logger import log_info, log_error
 
 class Database:
   def __init__(self) -> None:

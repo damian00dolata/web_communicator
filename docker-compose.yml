@@ -1,19 +1,21 @@
 services:
-  web-communicator-api:
-    container_name: web-communicator-api
+  api:
+    container_name: api
     restart: always
     build:
       context: ./server/
       dockerfile: Dockerfile
     ports:
-      - 8000:8000
+      - "8000:8000"
     environment:
       - PYTHONPATH=/app
-  web-communicator-client:
-    container_name: web-communicator-client
+    command: uvicorn main:mainApp.restApi.app --host 0.0.0.0 --port 8000 --reload
+
+  client:
+    container_name: client
     restart: always
     build:
       context: ./client/
       dockerfile: Dockerfile
     ports:
-     - 3000:3000
+     - "3000:3000"

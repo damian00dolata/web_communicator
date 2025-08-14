@@ -1,6 +1,7 @@
 # server/logger.py
 import logging
 import json
+from pathlib import Path
 import traceback
 from datetime import datetime
 
@@ -18,16 +19,18 @@ class JSONFormatter(logging.Formatter):
             log_entry["exception"] = "".join(traceback.format_exception(*record.exc_info)).strip()
         return json.dumps(log_entry)
 
-# Globalny logger
 logger = logging.getLogger("web_communicator")
-logger.setLevel(logging.DEBUG)
-handler = logging.StreamHandler()
-handler.setFormatter(JSONFormatter())
-logger.addHandler(handler)
+logger.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+logger.addHandler(ch)
 
-# Funkcje skrótowe
 def log_info(message: str, **kwargs):
+    kwargs = {k: str(v) if isinstance(v, Path) else v for k, v in kwargs.items()}
+
     logger.info(message, extra={"extra_data": kwargs})
 
 def log_error(message: str, **kwargs):
+    kwargs = {k: str(v) if isinstance(v, Path) else v for k, v in kwargs.items()}
+
     logger.error(message, extra={"extra_data": kwargs})
