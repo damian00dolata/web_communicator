@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 8000:8000
+    environment:
+      - PYTHONPATH=/app
   web-communicator-client:
     container_name: web-communicator-client
     restart: always
